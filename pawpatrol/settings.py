@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'pawpatrol.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'homes',
-        'USER': 'root',
-        'PASSWORD': '1234',
-        'HOST': '127.0.0.1',
+        'NAME': 'pawpatrol',
+        'USER': 'pawpatrol',
+        'PASSWORD': 'pawpatrol',
+        'HOST': 'pawpatrol.crximte8q0u2.us-west-2.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
