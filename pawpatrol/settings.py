@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'pawpatrol.urls'
 
 TEMPLATES = [
@@ -104,6 +105,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'POST',
+    'GET',
+    'PUT',
+)
 
 
 # Internationalization
