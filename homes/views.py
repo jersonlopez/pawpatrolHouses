@@ -29,9 +29,21 @@ def getAllHomes(request):
         filterCity = 'Cartagena'
     else:
         filterCity = ''
+    if(body['type']=="1"):
+        filterType = "Apartamento"
+    elif(body['type']=="2"):
+        filterType = "Casa"
+    elif(body['type']=="3"):
+        filterType = "Luxury"
+    else:
+        filterType = ''
     agency = Agency.objects.values('name','nit')
-    if(filterCity != ''):
+    if(filterCity != '' and filterType != ''):
+        homes = Homes.objects.all().filter(city=filterCity, type=filterType).values()
+    elif(filterCity != ''):
         homes = Homes.objects.all().filter(city=filterCity).values()
+    elif(filterType != ''):
+        homes = Homes.objects.all().filter(type=filterType).values()
     else:
         homes = Homes.objects.all().values()
     homes_list = list(homes)
