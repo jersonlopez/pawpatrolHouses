@@ -6,9 +6,15 @@ class Location(models.Model):
     latitude = models.DecimalField(max_digits=10, decimal_places=8)
     longitude = models.DecimalField(max_digits=10, decimal_places=8)
 
+    def _str_(self):              
+        return self.address
+
 class Agency(models.Model):
     name = models.CharField(max_length=200)
     nit = models.CharField(max_length=200)
+
+    def _str_(self):              
+        return self.name
 
 class Homes(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -21,4 +27,7 @@ class Homes(models.Model):
     totalAmount = models.DecimalField(max_digits=10, decimal_places=2)
     pricePerNight = models.DecimalField(max_digits=10, decimal_places=2)
     thumbnail = models.CharField(max_length=200)
+
+    def _str_(self):              
+        return self.name
 
