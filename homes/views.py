@@ -28,7 +28,7 @@ def getAllHomes(request):
     elif(body['city']=="CO-CTG"):
         filterCity = 'Cartagena'
     else:
-        filterCity = ''
+        return JsonResponse({'message': 'No city selected.'}, safe=False)
     if(body['type']=="1"):
         filterType = "Apartamento"
     elif(body['type']=="2"):
@@ -36,16 +36,9 @@ def getAllHomes(request):
     elif(body['type']=="3"):
         filterType = "Luxury"
     else:
-        filterType = ''
+        return JsonResponse({'message': 'No type selected.'}, safe=False)
     agency = Agency.objects.values('name','nit')
-    if(filterCity != '' and filterType != ''):
-        homes = Homes.objects.all().filter(city=filterCity, type=filterType).values()
-    elif(filterCity != ''):
-        homes = Homes.objects.all().filter(city=filterCity).values()
-    elif(filterType != ''):
-        homes = Homes.objects.all().filter(type=filterType).values()
-    else:
-        homes = Homes.objects.all().values()
+    homes = Homes.objects.all().filter(city=filterCity, type=filterType).values()
     homes_list = list(homes)
     for home in homes:
         location = Location.objects.filter(id=home['location_id']).values('address','latitude','longitude')
