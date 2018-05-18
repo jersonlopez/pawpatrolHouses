@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 import json
-from .models import Homes, Agency, Location
+from .models import Homes, Agency, Location, Booking
 from datetime import datetime 
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
@@ -54,3 +54,19 @@ def getHomesByCity(request, searchCity):
         location = Location.objects.filter(id=home['location_id']).values('address','latitude','longitude')
         home['location'] = location[0]
     return JsonResponse({'agency': agency[0], 'homes':homes_list}, safe=False)
+
+@csrf_exempt
+def addBooking(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    checkIn = datetime.strptime(body['checkIn'],'%d-%m-%Y')
+    checkOut = datetime.strptime(body['checkOut'],'%d-%m-%Y')
+    homeId = body['id']
+    booking = Booking.addBooking(checkIn,checkOut,homeId)
+    booking.save()
+
+    bookingTest = list(Booking.objects.filter(homeId=homeId).values())
+
+    return JsonResponse(bookingTest, safe=False)
+
+

@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 class Location(models.Model):
@@ -31,3 +32,16 @@ class Homes(models.Model):
     def _str_(self):              
         return self.name
 
+class Booking(models.Model):
+    checkIn = models.DateTimeField('check in')
+    checkOut = models.DateTimeField('check out')
+    bookingId = models.IntegerField(primary_key=True)
+    homeId = models.ForeignKey(Homes, on_delete=models.CASCADE)
+
+    def _str_(self):
+        return self.bookingId
+
+    @classmethod
+    def addBooking(cls, checkIn, checkOut, homeId):
+        booking = cls(checkIn=checkIn,checkOut=checkOut,) 
+        return booking
