@@ -32,10 +32,11 @@ class Homes(models.Model):
     def _str_(self):              
         return self.name
 
+
 class Booking(models.Model):
     checkIn = models.DateTimeField('check in')
     checkOut = models.DateTimeField('check out')
-    bookingId = models.IntegerField(primary_key=True)
+    bookingId = models.AutoField(primary_key=True)
     homeId = models.ForeignKey(Homes, on_delete=models.CASCADE)
 
     def _str_(self):
@@ -43,5 +44,5 @@ class Booking(models.Model):
 
     @classmethod
     def addBooking(cls, checkIn, checkOut, homeId):
-        booking = cls(checkIn=checkIn,checkOut=checkOut,) 
+        booking = cls(checkIn=checkIn,checkOut=checkOut, homeId=homeId) 
         return booking

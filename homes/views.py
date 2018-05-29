@@ -40,6 +40,7 @@ def getAllHomes(request):
     agency = Agency.objects.values('name','nit')
     homes = Homes.objects.all().filter(city=filterCity, type=filterType).values()
     homes_list = list(homes)
+    print('getHomes')
     for home in homes:
         location = Location.objects.filter(id=home['location_id']).values('address','latitude','longitude')
         home['location'] = location[0]
@@ -50,6 +51,7 @@ def getHomesByCity(request, searchCity):
     agency = Agency.objects.values('name','nit')
     homes = Homes.objects.filter(city=searchCity).values()
     homes_list = list(homes)
+    print('getHomesByCity')
     for home in homes:
         location = Location.objects.filter(id=home['location_id']).values('address','latitude','longitude')
         home['location'] = location[0]
@@ -61,12 +63,12 @@ def addBooking(request):
     body = json.loads(body_unicode)
     checkIn = datetime.strptime(body['checkIn'],'%d-%m-%Y')
     checkOut = datetime.strptime(body['checkOut'],'%d-%m-%Y')
-    homeId = body['id']
+    home = Homes.objects.filter(id=body['id'])[0]
+    print(home)
+    homeId = home
     booking = Booking.addBooking(checkIn,checkOut,homeId)
+    print(booking)
     booking.save()
-
-    bookingTest = list(Booking.objects.filter(homeId=homeId).values())
-
-    return JsonResponse(bookingTest, safe=False)
+    return JsonResponse({"status":"ok"}, safe=False)
 
 
