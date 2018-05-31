@@ -38,11 +38,12 @@ class Booking(models.Model):
     checkOut = models.DateTimeField('check out')
     bookingId = models.AutoField(primary_key=True)
     homeId = models.ForeignKey(Homes, on_delete=models.CASCADE)
+    userId = models.CharField(max_length=200, default="userUnknown")
 
     def _str_(self):
         return self.bookingId
 
     @classmethod
-    def addBooking(cls, checkIn, checkOut, homeId):
-        booking = cls(checkIn=checkIn,checkOut=checkOut, homeId=homeId) 
+    def addBooking(cls, checkIn, checkOut, homeId, userId):
+        booking = cls(checkIn=checkIn,checkOut=checkOut, homeId=homeId, userId=userId) 
         return booking

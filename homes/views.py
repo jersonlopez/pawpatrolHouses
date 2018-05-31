@@ -63,12 +63,34 @@ def addBooking(request):
     body = json.loads(body_unicode)
     checkIn = datetime.strptime(body['checkIn'],'%d-%m-%Y')
     checkOut = datetime.strptime(body['checkOut'],'%d-%m-%Y')
+    agency = Agency.objects.values('name','nit')
     home = Homes.objects.filter(id=body['id'])[0]
     print(home)
     homeId = home
-    booking = Booking.addBooking(checkIn,checkOut,homeId)
+    booking = Booking.addBooking(checkIn,checkOut,homeId,"sonorks")
     print(booking)
     booking.save()
-    return JsonResponse({"status":"ok"}, safe=False)
+    return JsonResponse({'agency': agency[0], 'codigo':1, 'mensaje':'Reserva con exito!!!'}, safe=False)
 
 
+@csrf_exempt
+def getBookingsByUser(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    user = body['user']
+    agency = Agency.objects.values('name','nit')
+    bookings = Booking.objects.filter(userId=user).values()
+    booking_list = list(bookings)
+    print(booking_list)
+    homes = Homes.objects.values()
+    homes_list = list(homes)
+    
+    for home in homes:
+        home['booking'] = []
+        location = Location.objects.filter(id=home['location_id']).values('address','latitude','longitude')
+        home['location'] = location[0]
+        for booking in bookings:
+            if(booking['homeId_id'] == home['id']):
+                home['booking'].append({"checkIn":booking['checkIn'], "checkOut":booking['checkOut'], "bookingId":booking['bookingId']})
+
+    return JsonResponse({'agency': agency[0], 'homes':homes_list}, safe=False)
