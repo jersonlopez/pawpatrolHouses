@@ -1,6 +1,6 @@
 from django.test import TestCase
 import unittest
-import verify
+from . import verify
 
 # Create your tests here.
 class TestConversor(unittest.TestCase):
