@@ -26,7 +26,7 @@ SECRET_KEY = '^svz-7ua&qo^@#)z*^5zf)9_@o1*0b4j4f71dld*2sy=&5x)&^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'https://pawpatrolhouses.herokuapp.com/']
+ALLOWED_HOSTS = []
 
 
 # Application definition
