@@ -54,7 +54,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'pawpatrol.urls'
 
-""" TEMPLATES = [
+TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
@@ -68,7 +68,7 @@ ROOT_URLCONF = 'pawpatrol.urls'
             ],
         },
     },
-] """
+]
 
 WSGI_APPLICATION = 'pawpatrol.wsgi.application'
 
