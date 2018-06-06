@@ -104,3 +104,19 @@ def getBookingsByUser(request):
         return JsonResponse({'agency': agency[0], 'homes':homes_list}, safe=False)
     else:
         return JsonResponse({'agency': 12}, safe=False) 
+
+
+@csrf_exempt
+def removeBooking(request):
+    token = request.META['HTTP_TOKEN']
+    #print(token)
+    token_valid = verify.verificar(token)
+    if(token_valid != "Error"):
+        agency = Agency.objects.values('name','nit')
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        bookingId = body['bookingId']
+        booking = Booking.objects.filter(bookingId=bookingId).delete()
+        return JsonResponse({'agency': agency[0], 'codigo':1, 'mensaje':'Cancelación con exito!!!'}, safe=False)
+    else:
+        return JsonResponse({'agency': 12}, safe=False)
