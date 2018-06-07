@@ -5,6 +5,7 @@ import json
 from .models import Homes, Agency, Location, Booking
 from . import verify
 from datetime import datetime 
+from . import validations
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 
@@ -14,30 +15,20 @@ def getAllHomes(request):
     body = json.loads(body_unicode)
     fechaLlegada = datetime.strptime(body['checkIn'],'%d-%m-%Y')
     fechaSalida = datetime.strptime(body['checkOut'],'%d-%m-%Y')
-    if(fechaLlegada > fechaSalida):
-        return JsonResponse({'message':'CheckIn date is lesser than CheckOut date.'}, safe=False)
-    if(fechaLlegada==fechaSalida):
+    if(validations.dateValidation(fechaLlegada, fechaSalida)==3):
+        return JsonResponse({'message':'CheckIn date is later than CheckOut date.'}, safe=False)
+    if(validations.dateValidation(fechaLlegada,fechaSalida)==2):
         return JsonResponse({'message': 'CheckIn and CheckOut date are equals.'}, safe=False)
-    if(body['city']=="CO-MDE"):
-        filterCity = 'Medellin'
-    elif(body['city']=="CO-BOG"):
-        filterCity = 'Bogota'
-    elif(body['city']=="CO-CLO"):
-        filterCity = 'Cali'
-    elif(body['city']=="CO-SMR"):
-        filterCity = 'Santa Marta'
-    elif(body['city']=="CO-CTG"):
-        filterCity = 'Cartagena'
-    else:
+    filterCity=validations.filterCity(body['city'])
+    if(filterCity=='void'):
         return JsonResponse({'message': 'No city selected.'}, safe=False)
-    if(body['type']=="1"):
-        filterType = "Apartamento"
-    elif(body['type']=="2"):
-        filterType = "Casa"
-    elif(body['type']=="3"):
-        filterType = "Luxury"
-    else:
-        return JsonResponse({'message': 'No type selected.'}, safe=False)
+    if(filterCity=='invalid'):
+        return JsonResponse({'message': 'Invalid City type selected.'}, safe=False)         
+    filterType=validations.filterType(body['type'])
+    if(filterType=='void'):
+         return JsonResponse({'message': 'No type selected.'}, safe=False)
+    if(filterType=='invalid'):
+         return JsonResponse({'message': 'Invalid type selected.'}, safe=False)      
     agency = Agency.objects.values('name','nit')
     homes = Homes.objects.all().filter(city=filterCity, type=filterType).values()
     homes_list = list(homes)
