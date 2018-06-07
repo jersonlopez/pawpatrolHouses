@@ -15,7 +15,7 @@ def getAllHomes(request):
     body = json.loads(body_unicode)
     fechaLlegada = datetime.strptime(body['checkIn'],'%d-%m-%Y')
     fechaSalida = datetime.strptime(body['checkOut'],'%d-%m-%Y')
-    if(validations.dateValidation(fechaLlegada, fechaSalida)==1):
+    if(validations.dateValidation(fechaLlegada, fechaSalida)==3):
         return JsonResponse({'message':'CheckIn date is later than CheckOut date.'}, safe=False)
     if(validations.dateValidation(fechaLlegada,fechaSalida)==2):
         return JsonResponse({'message': 'CheckIn and CheckOut date are equals.'}, safe=False)
