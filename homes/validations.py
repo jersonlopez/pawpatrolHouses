@@ -1,3 +1,8 @@
+from .models import Booking
+import pytz
+
+utc=pytz.UTC
+
 def dateValidation(checkIn, checkOut):
     if(checkOut>checkIn):
         return 1
@@ -34,3 +39,15 @@ def filterType(type):
     else:
         filterType = "invalid"
     return filterType
+
+def isHomeDisponible(id,checkIn,checkOut):
+    bookings = Booking.objects.filter(homeId=id).values()
+    booking_list = list(bookings)
+    for booking in bookings:
+        checkOut = utc.localize(checkOut)
+        checkIn = utc.localize(checkIn)
+        if ( booking['checkOut'] >= checkIn and booking['checkIn'] <= checkIn ):
+            return False
+        if ( booking['checkOut'] >= checkOut and booking['checkIn'] <= checkOut ):
+            return False
+    return True

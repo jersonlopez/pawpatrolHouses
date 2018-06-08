@@ -13,11 +13,11 @@ from django.views.decorators.csrf import csrf_exempt
 def getAllHomes(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
-    fechaLlegada = datetime.strptime(body['checkIn'],'%d-%m-%Y')
-    fechaSalida = datetime.strptime(body['checkOut'],'%d-%m-%Y')
-    if(validations.dateValidation(fechaLlegada, fechaSalida)==3):
+    checkIn = datetime.strptime(body['checkIn'],'%d-%m-%Y')
+    checkOut = datetime.strptime(body['checkOut'],'%d-%m-%Y')
+    if(validations.dateValidation(checkIn, checkOut)==3):
         return JsonResponse({'message':'CheckIn date is later than CheckOut date.'}, safe=False)
-    if(validations.dateValidation(fechaLlegada,fechaSalida)==2):
+    if(validations.dateValidation(checkIn,checkOut)==2):
         return JsonResponse({'message': 'CheckIn and CheckOut date are equals.'}, safe=False)
     filterCity=validations.filterCity(body['city'])
     if(filterCity=='void'):
@@ -34,8 +34,11 @@ def getAllHomes(request):
     homes_list = list(homes)
     print('getHomes')
     for home in homes:
-        location = Location.objects.filter(id=home['location_id']).values('address','latitude','longitude')
-        home['location'] = location[0]
+        if(validations.isHomeDisponible(home['id'],checkIn, checkOut)):
+            location = Location.objects.filter(id=home['location_id']).values('address','latitude','longitude')
+            home['location'] = location[0]
+        else:
+            homes_list.remove(home)
     return JsonResponse({'agency': agency[0], 'homes':homes_list}, safe=False)
 
 @csrf_exempt 
