@@ -1,0 +1,1 @@
+web: gunicorn pawpatrol.wsgi --log-level=critical

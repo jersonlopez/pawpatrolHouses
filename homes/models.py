@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 class Location(models.Model):
@@ -6,9 +7,15 @@ class Location(models.Model):
     latitude = models.DecimalField(max_digits=10, decimal_places=8)
     longitude = models.DecimalField(max_digits=10, decimal_places=8)
 
+    def _str_(self):              
+        return self.address
+
 class Agency(models.Model):
     name = models.CharField(max_length=200)
     nit = models.CharField(max_length=200)
+
+    def _str_(self):              
+        return self.name
 
 class Homes(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -22,3 +29,21 @@ class Homes(models.Model):
     pricePerNight = models.DecimalField(max_digits=10, decimal_places=2)
     thumbnail = models.CharField(max_length=200)
 
+    def _str_(self):              
+        return self.name
+
+
+class Booking(models.Model):
+    checkIn = models.DateTimeField('check in')
+    checkOut = models.DateTimeField('check out')
+    bookingId = models.AutoField(primary_key=True)
+    homeId = models.ForeignKey(Homes, on_delete=models.CASCADE)
+    userId = models.CharField(max_length=200, default="userUnknown")
+
+    def _str_(self):
+        return self.bookingId
+
+    @classmethod
+    def addBooking(cls, checkIn, checkOut, homeId, userId):
+        booking = cls(checkIn=checkIn,checkOut=checkOut, homeId=homeId, userId=userId) 
+        return booking
