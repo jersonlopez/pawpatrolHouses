@@ -4,13 +4,6 @@ from datetime import datetime
 from . import verify
 from . import validations
 
-# Create your tests here.
-#class TestConversor(unittest.TestCase):
-
-   # def test_convertir_diez_a_romano(self):
-   #     self.assertEqual(verify.verificar(),'ubOEqfp9ZHP0gL4lkoYbrnaotwG3')
-
-
 class ValidationTest(unittest.TestCase):
 
     def testCheckInlaterThanCheckout(self):
