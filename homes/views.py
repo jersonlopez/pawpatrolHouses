@@ -10,8 +10,9 @@ from . import validations
 from django.views.decorators.csrf import csrf_exempt
 
 """*********************************** Get all homes available ************************************"""
-@csrf_exempt 
+@csrf_exempt
 def getAllHomes(request):
+    print(request.META[''])
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
 
