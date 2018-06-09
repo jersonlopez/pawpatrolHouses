@@ -44,12 +44,12 @@ def getAllHomes(request):
     homes_list = list(homes)
 
     ################################### Availability Validation ################################
-    """for home in homes:
+    for home in homes:
         if(validations.isHomeDisponible(home['id'],checkIn, checkOut)):
             location = Location.objects.filter(id=home['location_id']).values('address','latitude','longitude')
             home['location'] = location[0]
         else:
-            homes_list.remove(home)"""
+            homes_list.remove(home)
     return JsonResponse({'agency': agency[0], 'homes':homes_list}, safe=False)
 
 
