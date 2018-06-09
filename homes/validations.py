@@ -41,6 +41,7 @@ def filterType(type):
         filterType = "invalid"
     return filterType
 
+@csrf_exempt
 def isHomeDisponible(id,checkIn,checkOut):
     bookings = Booking.objects.filter(homeId=id).values()
     booking_list = list(bookings)
