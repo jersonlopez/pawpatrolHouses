@@ -10,6 +10,7 @@ from . import validations
 from django.views.decorators.csrf import csrf_exempt
 
 """*********************************** Get all homes available ************************************"""
+@csrf_exempt
 def getAllHomes(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
@@ -53,7 +54,7 @@ def getAllHomes(request):
 
 
 """*********************************** Get all homes by City ************************************"""
-
+@csrf_exempt
 def getHomesByCity(request, searchCity):
     agency = Agency.objects.values('name','nit')
     homes = Homes.objects.filter(city=searchCity).values()
@@ -65,7 +66,7 @@ def getHomesByCity(request, searchCity):
 
 
 """************************************* Add a Booking *****************************************"""
-
+@csrf_exempt
 def addBooking(request):
     token = request.META['HTTP_TOKEN']
     token_valid = verify.verificar(token)
@@ -89,7 +90,7 @@ def addBooking(request):
 
 
 """************************************** Get my Bookings *******************************************"""
-
+@csrf_exempt
 def getBookingsByUser(request):
     token = request.META['HTTP_TOKEN']
     token_valid = verify.verificar(token)
@@ -117,7 +118,7 @@ def getBookingsByUser(request):
 
 
 """***************************************** Delete a booking *****************************************"""
-
+@csrf_exempt
 def removeBooking(request):
     token = request.META['HTTP_TOKEN']
     token_valid = verify.verificar(token)
